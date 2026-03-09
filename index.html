@@ -827,13 +827,271 @@
   }
   .theme-toggle:hover { border-color: var(--border2); color: var(--text); transform: scale(1.05); }
   .theme-toggle:active { transform: scale(0.95); }
+
+  /* UNDO BUTTON */
+  .undo-btn {
+    position: fixed;
+    bottom: calc(80px + var(--safe-bottom));
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 50px;
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  .undo-btn.visible {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(-50%) translateY(0);
+  }
+  .undo-timer {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--border2);
+    border-top-color: var(--text2);
+    animation: undoSpin 5s linear forwards;
+    flex-shrink: 0;
+  }
+  .undo-btn span {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--text2);
+  }
+  @keyframes undoSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* ACTIVE TASK STRIP */
+  .active-task-strip {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    display: none;
+    align-items: center;
+    gap: 12px;
+    animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .active-task-strip.visible { display: flex; }
+  .ats-icon { font-size: 20px; }
+  .ats-info { flex: 1; min-width: 0; }
+  .ats-name { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ats-time { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--gold); margin-top: 2px; }
+  .ats-controls { display: flex; gap: 8px; }
+  .ats-btn {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  .ats-btn:hover { border-color: var(--border2); color: var(--text); }
+  .ats-btn.complete { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+  /* TAB NAVIGATION */
+  .tab-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, var(--bg) 30%);
+    padding: 16px 20px;
+    padding-bottom: calc(16px + var(--safe-bottom));
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    z-index: 10;
+  }
+  .tab-btn {
+    flex: 1;
+    max-width: 160px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 20px;
+    color: var(--text3);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .tab-btn:hover { border-color: var(--border2); color: var(--text2); }
+  .tab-btn.active {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+  }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* TASKS TAB */
+  .task-create-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .task-form-row { display: flex; gap: 10px; margin-bottom: 12px; }
+  .task-form-row:last-child { margin-bottom: 0; }
+  .task-input {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .task-input:focus { border-color: var(--border2); }
+  .task-input::placeholder { color: var(--text3); }
+  .task-input-small { width: 80px; flex: none; text-align: center; font-family: 'Space Mono', monospace; }
+  .task-select {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    outline: none;
+    cursor: pointer;
+  }
+  .task-select option { background: var(--bg); color: var(--text); }
+  .task-add-btn {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .task-add-btn:hover { background: #ddd; transform: translateY(-1px); }
+  .task-add-btn:active { transform: scale(0.97); }
+
+  .task-mode-row { display: flex; gap: 10px; align-items: center; }
+  .time-unit-toggle {
+    display: flex;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px;
+    flex: 1;
+    gap: 4px;
+  }
+  .time-unit-option-input {
+    flex: 1;
+    padding: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    text-align: center;
+    outline: none;
+    transition: all 0.2s;
+  }
+  .time-unit-option-input:focus {
+    border-color: var(--border2);
+    background: var(--surface2);
+  }
+  .time-unit-option-input::placeholder {
+    color: var(--text3);
+    font-weight: 700;
+  }
+  .task-list-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    min-height: 200px;
+  }
+  .task-list { display: flex; flex-direction: column; gap: 10px; }
+  .task-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .task-card.running { border-color: var(--gold); }
+  .tc-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+  .tc-icon { font-size: 24px; }
+  .tc-info { flex: 1; min-width: 0; }
+  .tc-name { font-size: 14px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tc-meta { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text3); margin-top: 4px; }
+  .tc-meta span { color: var(--gold); }
+  .tc-timer { font-family: 'Space Mono', monospace; font-size: 18px; font-weight: 700; color: var(--gold); min-width: 80px; text-align: right; }
+  .tc-controls { display: flex; gap: 6px; }
+  .tc-btn {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text3);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  .tc-btn:hover { border-color: var(--border2); color: var(--text); }
+  .tc-btn.start { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  .tc-btn.pause { background: var(--surface2); color: var(--text2); }
+  .tc-btn.complete { background: var(--gold); color: var(--bg); border-color: var(--gold); }
+  .tc-btn.delete { color: #ff4444; border-color: #552222; }
+  .tc-btn.delete:hover { background: #552222; }
+
+  .task-empty { text-align: center; padding: 40px 20px; color: var(--text3); font-size: 13px; line-height: 2; }
+  .task-empty .empty-icon { font-size: 40px; margin-bottom: 12px; display: block; opacity: 0.3; }
+
+  /* Hide reset button on TASKS tab */
+  .app[data-tab="tasks"] .reset-btn-wrap { display: none; }
 </style>
 </head>
 <body>
 
 <div class="offline-bar" id="offlineBar">⚡ OFFLINE MODE — DATA SAVED LOCALLY</div>
 
-<div class="app">
+<div class="app" id="app" data-tab="streak">
   <!-- HEADER -->
   <div class="header">
     <div class="logo">
@@ -848,6 +1106,12 @@
 
   <!-- INSTALL BANNERS (injected by JS) -->
   <div id="installArea"></div>
+
+  <!-- ACTIVE TASK STRIP -->
+  <div class="active-task-strip" id="activeTaskStrip"></div>
+
+  <!-- STREAK TAB CONTENT -->
+  <div class="tab-content active" id="tabStreak">
 
   <!-- HERO -->
   <div class="hero">
@@ -917,14 +1181,53 @@
     <div class="tag-filter" id="tagFilter"></div>
     <div class="history-list" id="historyList"></div>
   </div>
-</div>
+  </div><!-- END STREAK TAB -->
 
-<!-- BOTTOM BAR -->
-<div class="bottom-bar">
-  <button class="reset-btn" onclick="showReset()">RESET ALL DATA</button>
+  <!-- TASKS TAB CONTENT -->
+  <div class="tab-content" id="tabTasks">
+    <div class="task-create-wrap">
+      <div class="section-label" style="margin-bottom:14px">NEW TASK</div>
+      <div class="task-form-row">
+        <input class="task-input" id="taskName" placeholder="Task name" maxlength="40">
+        <input class="task-input task-input-small" id="taskBasePts" placeholder="pts" type="number" min="0" max="999" value="">
+      </div>
+      <div class="task-form-row">
+        <input class="task-input" id="taskIcon" placeholder="emoji (optional)" maxlength="4" style="max-width:120px">
+      </div>
+      <div class="task-form-row" style="margin-top:12px">
+        <div class="time-unit-toggle" id="timeUnitToggle">
+          <input class="time-unit-option-input" id="taskDurationSec" type="number" min="0" max="999" placeholder="sec">
+          <input class="time-unit-option-input" id="taskDurationMin" type="number" min="0" max="999" placeholder="min">
+          <input class="time-unit-option-input" id="taskDurationHour" type="number" min="0" max="999" placeholder="hour">
+        </div>
+      </div>
+      <div class="task-form-row" style="margin-top:14px">
+        <button class="task-add-btn" onclick="saveTask()" style="flex:1">+ CREATE TASK</button>
+      </div>
+    </div>
+    <div class="task-list-wrap">
+      <div class="section-label" style="margin-bottom:14px">TASK QUEUE</div>
+      <div class="task-list" id="taskList"></div>
+    </div>
+  </div>
+</div><!-- END APP -->
+
+<!-- TAB NAVIGATION -->
+<div class="tab-nav">
+  <button class="tab-btn active" id="tabBtnStreak" onclick="switchTab('streak')">
+    <span>⚡</span> STREAK
+  </button>
+  <button class="tab-btn" id="tabBtnTasks" onclick="switchTab('tasks')">
+    <span>📋</span> TASKS
+  </button>
 </div>
 
 <div class="toast-wrap" id="toastWrap"></div>
+
+<button class="undo-btn" id="undoBtn" onclick="undoLast()">
+  <div class="undo-timer" id="undoTimer"></div>
+  <span>UNDO</span>
+</button>
 
 <script>
 // ─── SERVICE WORKER REGISTRATION ─────────────────────────────────────────────
@@ -1052,6 +1355,12 @@ let isDragging = false;
 let dragSrc = null;
 let longPressTimer = null;
 let currentFilter = 'ALL';
+let undoTimeout = null;
+let lastEntry = null;
+
+// Task Queue state
+let taskIntervals = {};
+let currentTaskId = null;
 
 const LEVELS = [
   { name: 'BEGINNER', min: 0, max: 200 },
@@ -1396,6 +1705,11 @@ function addActivity(name, pts, icon, event) {
   if (event) spawnRipple(event);
   showToast(`+${pts} pts · ${name}`);
   if (newLevel !== prevLevel) setTimeout(() => { playSound('levelup'); showToast(`⚡ LEVEL UP — ${newLevel}`); }, 400);
+  
+  // Set last entry for undo and show undo button
+  lastEntry = entry;
+  showUndoBtn();
+  
   render();
 }
 
@@ -1433,6 +1747,37 @@ function deleteEntry(id) {
     playSound('delete');
     render();
   }, 280);
+}
+
+function showUndoBtn() {
+  const btn = document.getElementById('undoBtn');
+  const timer = document.getElementById('undoTimer');
+  timer.style.animation = 'none';
+  void timer.offsetWidth;
+  timer.style.animation = 'undoSpin 5s linear forwards';
+  btn.classList.add('visible');
+  clearTimeout(undoTimeout);
+  undoTimeout = setTimeout(() => {
+    btn.classList.remove('visible');
+    lastEntry = null;
+  }, 5000);
+}
+
+function undoLast() {
+  if (!lastEntry) return;
+  clearTimeout(undoTimeout);
+  document.getElementById('undoBtn').classList.remove('visible');
+  const data = loadData();
+  const idx = data.entries.findIndex((e) => e.id === lastEntry.id);
+  if (idx !== -1) {
+    data.totalPts = Math.max(0, data.totalPts - lastEntry.pts);
+    data.entries.splice(idx, 1);
+    saveData(data);
+  }
+  playSound('delete');
+  showToast(`↩ Undid "${lastEntry.name}"`);
+  lastEntry = null;
+  render();
 }
 
 function showReset() {
@@ -1509,11 +1854,313 @@ function initTheme() {
   }
 }
 
+// ─── TASK QUEUE ──────────────────────────────────────────────────────────────
+function loadTasks() {
+  try { return JSON.parse(localStorage.getItem('streak_tasks') || '[]'); }
+  catch(e) { return []; }
+}
+
+function saveTasks(tasks) {
+  localStorage.setItem('streak_tasks', JSON.stringify(tasks));
+}
+
+function saveTask() {
+  const name = document.getElementById('taskName').value.trim();
+  const basePts = parseInt(document.getElementById('taskBasePts').value) || 0;
+  const icon = document.getElementById('taskIcon').value.trim() || '📋';
+  const secVal = parseInt(document.getElementById('taskDurationSec').value);
+  const minVal = parseInt(document.getElementById('taskDurationMin').value);
+  const hourVal = parseInt(document.getElementById('taskDurationHour').value);
+  
+  if (!name) { showToast('Enter task name'); return; }
+  if ((!secVal || secVal <= 0) && (!minVal || minVal <= 0) && (!hourVal || hourVal <= 0)) {
+    showToast('Set duration > 0'); return;
+  }
+  
+  // Calculate total duration in seconds
+  const durationSec = (secVal || 0) + (minVal || 0) * 60 + (hourVal || 0) * 3600;
+  
+  const task = {
+    id: Date.now().toString(),
+    name,
+    basePts: basePts || 0,
+    finalPts: Math.round((basePts || 0) * 1.5),
+    icon,
+    secVal: secVal || 0,
+    minVal: minVal || 0,
+    hourVal: hourVal || 0,
+    durationSec,
+    running: false,
+    startedAt: null,
+    elapsed: 0,
+    createdAt: new Date().toISOString()
+  };
+  
+  const tasks = loadTasks();
+  tasks.push(task);
+  saveTasks(tasks);
+  
+  playSound('add');
+  showToast(`Task "${name}" created`);
+  
+  document.getElementById('taskName').value = '';
+  document.getElementById('taskIcon').value = '';
+  document.getElementById('taskBasePts').value = '';
+  document.getElementById('taskDurationSec').value = '';
+  document.getElementById('taskDurationMin').value = '';
+  document.getElementById('taskDurationHour').value = '';
+  
+  renderTasks();
+  updateActiveStrip();
+}
+
+function formatTimeRemaining(sec) {
+  if (sec <= 0) return '00:00';
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+}
+
+function startTaskTimer(id) {
+  const tasks = loadTasks();
+  const task = tasks.find(t => t.id === id);
+  if (!task || task.running) return;
+  
+  task.running = true;
+  task.startedAt = Date.now();
+  saveTasks(tasks);
+  
+  const interval = setInterval(() => {
+    const tks = loadTasks();
+    const tk = tks.find(t => t.id === id);
+    if (!tk) { clearInterval(interval); return; }
+    
+    tk.elapsed += 1;
+    
+    if (tk.elapsed >= tk.durationSec) {
+      tk.running = false;
+      tk.elapsed = tk.durationSec;
+      saveTasks(tks);
+      clearInterval(interval);
+      delete taskIntervals[id];
+      completeTask(id);
+    } else {
+      saveTasks(tks);
+      renderTasks();
+      updateActiveStrip();
+    }
+  }, 1000);
+  
+  taskIntervals[id] = interval;
+  renderTasks();
+  updateActiveStrip();
+}
+
+function pauseTask(id) {
+  const tasks = loadTasks();
+  const task = tasks.find(t => t.id === id);
+  if (!task || !task.running) return;
+  
+  task.running = false;
+  saveTasks(tasks);
+  
+  if (taskIntervals[id]) {
+    clearInterval(taskIntervals[id]);
+    delete taskIntervals[id];
+  }
+  
+  renderTasks();
+  updateActiveStrip();
+}
+
+function completeTask(id) {
+  const tasks = loadTasks();
+  const task = tasks.find(t => t.id === id);
+  if (!task) return;
+  
+  // Show completion modal
+  const modal = document.createElement('div');
+  modal.className = 'modal-bg';
+  modal.innerHTML = `
+    <div class="modal">
+      <h3>✅ TASK COMPLETE!</h3>
+      <p>"${task.name}" finished.<br>Add <strong style="color:var(--gold)">+${task.finalPts} pts</strong> to your total?</p>
+      <div class="modal-btns">
+        <button class="modal-cancel" onclick="dismissTaskComplete('${task.id}')">DISMISS</button>
+        <button class="modal-confirm" onclick="confirmTaskComplete('${task.id}')">CLAIM PTS</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  playSound('levelup');
+}
+
+function dismissTaskComplete(id) {
+  document.querySelector('.modal-bg')?.remove();
+  const tasks = loadTasks();
+  const idx = tasks.findIndex(t => t.id === id);
+  if (idx !== -1) {
+    tasks.splice(idx, 1);
+    saveTasks(tasks);
+    renderTasks();
+    updateActiveStrip();
+  }
+}
+
+function confirmTaskComplete(id) {
+  document.querySelector('.modal-bg')?.remove();
+  const tasks = loadTasks();
+  const task = tasks.find(t => t.id === id);
+  if (!task) return;
+  
+  // Add points to total
+  const data = loadData();
+  data.totalPts = (data.totalPts || 0) + task.finalPts;
+  data.entries.push({
+    id: Date.now().toString(),
+    name: `Task: ${task.name}`,
+    pts: task.finalPts,
+    icon: task.icon,
+    ts: new Date().toISOString(),
+    date: getToday()
+  });
+  saveData(data);
+  
+  // Remove task
+  const idx = tasks.findIndex(t => t.id === id);
+  if (idx !== -1) {
+    tasks.splice(idx, 1);
+    saveTasks(tasks);
+  }
+  
+  playSound('add');
+  showToast(`+${task.finalPts} pts — ${task.name}`);
+  render();
+  renderTasks();
+  updateActiveStrip();
+}
+
+function deleteTask(id) {
+  if (taskIntervals[id]) {
+    clearInterval(taskIntervals[id]);
+    delete taskIntervals[id];
+  }
+  const tasks = loadTasks();
+  const idx = tasks.findIndex(t => t.id === id);
+  if (idx !== -1) {
+    tasks.splice(idx, 1);
+    saveTasks(tasks);
+  }
+  playSound('delete');
+  showToast('Task deleted');
+  renderTasks();
+  updateActiveStrip();
+}
+
+function renderTasks() {
+  const tasks = loadTasks();
+  const list = document.getElementById('taskList');
+  
+  if (!tasks.length) {
+    list.innerHTML = `<div class="task-empty"><span class="empty-icon">◎</span>No tasks yet.<br>Create one above to get started.</div>`;
+    return;
+  }
+  
+  list.innerHTML = '';
+  tasks.forEach(task => {
+    const remaining = Math.max(0, task.durationSec - task.elapsed);
+    const isRunning = task.running;
+    
+    // Build duration label from values
+    const parts = [];
+    if (task.hourVal) parts.push(`${task.hourVal}hr`);
+    if (task.minVal) parts.push(`${task.minVal}min`);
+    if (task.secVal) parts.push(`${task.secVal}sec`);
+    const durationLabel = parts.join(' ') || '0min';
+    
+    const card = document.createElement('div');
+    card.className = 'task-card' + (isRunning ? ' running' : '');
+    card.innerHTML = `
+      <div class="tc-left">
+        <div class="tc-icon">${task.icon}</div>
+        <div class="tc-info">
+          <div class="tc-name">${task.name}</div>
+          <div class="tc-meta"><span>+${task.finalPts} pts</span> · ${durationLabel}</div>
+        </div>
+      </div>
+      <div class="tc-timer">${formatTimeRemaining(remaining)}</div>
+      <div class="tc-controls">
+        ${isRunning 
+          ? `<button class="tc-btn pause" onclick="pauseTask('${task.id}')" title="Pause">⏸</button>`
+          : `<button class="tc-btn start" onclick="startTaskTimer('${task.id}')" title="Start">▶</button>`
+        }
+        <button class="tc-btn complete" onclick="completeTask('${task.id}')" title="Complete">✓</button>
+        <button class="tc-btn delete" onclick="deleteTask('${task.id}')" title="Delete">✕</button>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+function updateActiveStrip() {
+  const tasks = loadTasks();
+  const runningTasks = tasks.filter(t => t.running);
+  const strip = document.getElementById('activeTaskStrip');
+  
+  if (!runningTasks.length) {
+    strip.classList.remove('visible');
+    strip.innerHTML = '';
+    return;
+  }
+  
+  const task = runningTasks[0]; // Show first running task
+  const remaining = Math.max(0, task.durationSec - task.elapsed);
+  
+  strip.innerHTML = `
+    <div class="ats-icon">⏱</div>
+    <div class="ats-info">
+      <div class="ats-name">${task.name}</div>
+      <div class="ats-time">${formatTimeRemaining(remaining)} remaining</div>
+    </div>
+    <div class="ats-controls">
+      <button class="ats-btn" onclick="pauseTask('${task.id}')" title="Pause">⏸</button>
+      <button class="ats-btn complete" onclick="completeTask('${task.id}')" title="Complete">✓</button>
+    </div>
+  `;
+  strip.classList.add('visible');
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.getElementById('app').setAttribute('data-tab', tab);
+  
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  
+  document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
+  document.getElementById(`tabBtn${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
+  
+  if (tab === 'tasks') {
+    renderTasks();
+    updateActiveStrip();
+  }
+}
+
+let currentTab = 'streak';
+
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 buildQuickGrid();
 render();
 initTheme();
 setInterval(updateHeader, 60000);
+
+// Load running tasks on init
+const runningTasksOnInit = loadTasks().filter(t => t.running);
+runningTasksOnInit.forEach(t => {
+  if (!taskIntervals[t.id]) {
+    startTaskTimer(t.id);
+  }
+});
 </script>
 </body>
 </html>
